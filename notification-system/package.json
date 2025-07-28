@@ -1,0 +1,28 @@
+{
+  "name": "notification-system",
+  "version": "1.0.0",
+  "description": "Real-time notification system with microservices architecture",
+  "scripts": {
+    "start:api": "cd services/notification-api && npm start",
+    "start:processor": "cd services/notification-processor && npm start", 
+    "start:delivery": "cd services/delivery-service && npm start",
+    "start:all": "concurrently \"npm run start:api\" \"npm run start:processor\" \"npm run start:delivery\"",
+    "build:all": "npm run build --workspaces",
+    "test:all": "npm run test --workspaces",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "k8s:deploy": "kubectl apply -f infrastructure/kubernetes/",
+    "setup:dev": "chmod +x scripts/setup-dev.sh && ./scripts/setup-dev.sh"
+  },
+  "workspaces": [
+    "services/*",
+    "shared"
+  ],
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "lerna": "^6.4.1"
+  },
+  "keywords": ["microservices", "notifications", "websocket", "kafka", "redis"],
+  "author": "Your Name",
+  "license": "MIT"
+}
