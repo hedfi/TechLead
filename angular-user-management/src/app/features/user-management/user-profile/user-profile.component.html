@@ -1,0 +1,109 @@
+<div class="user-profile-container">
+  <h1 class="profile-title">User Profile</h1>
+  
+  <!-- Loading spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <app-loading-spinner [size]="'medium'"></app-loading-spinner>
+  </div>
+  
+  <div *ngIf="!loading" class="profile-content">
+    <!-- Profile Form -->
+    <section class="profile-section">
+      <h2>Personal Information</h2>
+      
+      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="profile-form">
+        <!-- Name Field -->
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input 
+            type="text" 
+            id="name" 
+            formControlName="name" 
+            class="form-control"
+            [ngClass]="{'invalid': hasError(profileForm, 'name', 'required') || hasError(profileForm, 'name', 'minlength')}"
+          >
+          <app-error-message *ngIf="hasError(profileForm, 'name', 'required') || hasError(profileForm, 'name', 'minlength')" 
+            [message]="getErrorMessage(profileForm, 'name')"></app-error-message>
+        </div>
+        
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email" 
+            class="form-control"
+            [ngClass]="{'invalid': hasError(profileForm, 'email', 'required') || hasError(profileForm, 'email', 'email')}"
+          >
+          <app-error-message *ngIf="hasError(profileForm, 'email', 'required') || hasError(profileForm, 'email', 'email')" 
+            [message]="getErrorMessage(profileForm, 'email')"></app-error-message>
+        </div>
+        
+        <!-- Submit Button -->
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="profileForm.invalid || submitting"
+            (click)="updateProfile()"
+          >
+            <app-loading-spinner *ngIf="submitting" [size]="'small'" [color]="'#ffffff'"></app-loading-spinner>
+            <span *ngIf="!submitting">Update Profile</span>
+          </button>
+        </div>
+      </form>
+    </section>
+    
+    <!-- Password Form -->
+    <section class="profile-section">
+      <h2>Change Password</h2>
+      
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="profile-form">
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password">New Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            formControlName="password" 
+            class="form-control"
+            [ngClass]="{'invalid': hasError(passwordForm, 'password', 'required') || hasError(passwordForm, 'password', 'minlength')}"
+          >
+          <app-error-message *ngIf="hasError(passwordForm, 'password', 'required') || hasError(passwordForm, 'password', 'minlength')" 
+            [message]="getErrorMessage(passwordForm, 'password')"></app-error-message>
+        </div>
+        
+        <!-- Confirm Password Field -->
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            formControlName="confirmPassword" 
+            class="form-control"
+            [ngClass]="{'invalid': hasError(passwordForm, 'confirmPassword', 'required') || passwordForm.hasError('passwordMismatch')}"
+          >
+          <app-error-message *ngIf="hasError(passwordForm, 'confirmPassword', 'required') || passwordForm.hasError('passwordMismatch')" 
+            [message]="getErrorMessage(passwordForm, 'confirmPassword')"></app-error-message>
+        </div>
+        
+        <!-- Submit Button -->
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="btn btn-secondary" 
+            [disabled]="passwordForm.invalid || passwordSubmitting"
+            (click)="changePassword()"
+          >
+            <app-loading-spinner *ngIf="passwordSubmitting" [size]="'small'" [color]="'#ffffff'"></app-loading-spinner>
+            <span *ngIf="!passwordSubmitting">Change Password</span>
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+
+<!-- Notification Toast -->
+<app-notification-toast></app-notification-toast>
